@@ -1,18 +1,23 @@
 require('dotenv').config()
-const { Telegraf, session, SceneContextMessageUpdate, Scenes: {BaseScene, Stage} } = require('telegraf')
+const { Telegraf, session, Scenes: {BaseScene, Stage} } = require('telegraf')
 
-let userMsg = "Переменная для хранения кода."       //просить код, возможно, нужно без подобных переменных.
-let ChatID
-
+// Сцена /code.
 const codeScene = new BaseScene('codeScene')
-codeScene.enter(ctx => ctx.reply('Введите код: '))
-codeScene.on('text', ctx => {
-    userMsg = ctx.message.text
-    ChatID = String(ctx.chat.id)
+codeScene.enter(async ctx => await ctx.reply('Введите код: '))
+codeScene.on('text', async ctx => {
+    const code = ctx.message.text
+    const chatID = String(ctx.chat.id)
 
-    return ctx.scene.leave(ctx.reply('Код сохранен.'))
+    if (code?.length !== 4) {
+        await ctx.reply('Код введен некорректно, повторите попытку.')
+    }
+    // в данном else code должен сверятся с данным из DB.
+    else {
+        await ctx.reply(`Ваш код: ${code}. Код уже проверяется.`)
+        return ctx.scene.leave()
+    }
+    codeScene.leave(ctx => ctx.reply('Выход из сцены.'))
 })
-codeScene.leave(ctx => ctx.reply)
 
 const stage = new Stage([codeScene])
 
@@ -28,7 +33,6 @@ bot.use(session())
 bot.use(stage.middleware())
 
 bot.start(ctx => ctx.reply(startText))
-bot.command('code', ctx => ctx.scene.enter('codeScene'))
-bot.command('lastMsg', ctx => ctx.reply(userMsg + ", " + ChatID))    //команда для проверки работы команды /code
+bot.command('code', async ctx => await ctx.scene.enter('codeScene'))
 
 bot.launch()
