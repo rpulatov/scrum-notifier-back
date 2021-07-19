@@ -40,7 +40,6 @@ sequelize
     .then(() => console.log('DB Connected.'))
     .catch((err) => console.error('DB Connection error: ', err))
 
-sequelize.sync()
 
 const db = {
     User,

@@ -1,33 +1,34 @@
 const db = require('../models/index')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 class authController {
 
-    async login(req, res) {
+    async signin(req, res) {
         try {
             /*await db.User.create({
-                email: "admin",
+                username: "admin",
                 hash: bcrypt.hashSync("1234", 10)
             })*/
-            const { email, password } = req.body
-            var instance = await db.User.findOne({
-                where: { email: email }
+            const { username, password } = req.body
+            const instance = await db.User.findOne({
+                where: { username: username }
             })
             if (instance) {
+
                 const user = instance.get({ plain: true })
                 if (bcrypt.compareSync(password, user.hash)) {
-                    //Тут создание JWT и отправка его на клиент...
-
-
+                    const token = jwt.sign({ id: user.id, role: user.roleId }, process.env.JWT_SECRET, { expiresIn: '30h' })
+                    res.status(200).json({ user: user, token: token })
                 } else {
-                    res.status(400).json({ message: "Не верный пароль" })
+                    res.status(400).json({ message: "Не верный логин или пароль" })
                 }
             } else {
-                res.status(400).json({ message: `Пользователь не найден` })
+                res.status(400).json({ message: `Не верный логин или пароль` })
             }
         } catch (e) {
             console.log(e)
-            res.status(400).json({ message: "Login error" })
+            res.status(400).json({ message: `username error: ${e.message}` })
         }
 
     }
