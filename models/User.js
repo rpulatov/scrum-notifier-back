@@ -15,9 +15,10 @@ module.exports = function (sequelize) {
                 type: Sequelize.STRING(128),
                 allowNull: true
             },
-            email: {
+            username: {
                 type: Sequelize.STRING(128),
-                allowNull: false
+                allowNull: false,
+                unique: true
             },
         },
         { sequelize, modelName: 'user', tableName: 'User' }

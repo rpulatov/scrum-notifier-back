@@ -14,15 +14,22 @@ module.exports = function (sequelize) {
             },
             code: {
                 type: Sequelize.STRING(4),
-                allowNull: true
+                allowNull: true,
+                unique: true
             },
             email: {
                 type: Sequelize.STRING(128),
-                allowNull: false
+                allowNull: false,
+                unique: true
+            },
+            name: {
+                type: Sequelize.STRING(128),
+                allowNull: true
             },
             chatId: {
                 type: Sequelize.STRING(128),
-                allowNull: true
+                allowNull: true,
+                unique: true
             },
         },
         { sequelize, modelName: 'employee', tableName: 'Employee' }
