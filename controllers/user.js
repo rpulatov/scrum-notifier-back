@@ -1,7 +1,7 @@
 const db = require('../models/index')
 const bcrypt = require('bcryptjs')
 
-class authController {
+class userController {
 
     async getById(req, res) {
         try {
@@ -85,4 +85,4 @@ class authController {
 
 }
 
-module.exports = new authController()
+module.exports = new userController()
