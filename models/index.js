@@ -8,28 +8,30 @@ const RoleModel = require('./Role')
 const MeetingTypeModel = require('./MeetingType')
 
 
-var sequelize = new Sequelize(
+const sequelize = new Sequelize(
     process.env.DB_NAME,
     process.env.DB_USERNAME,
     process.env.DB_PASSWORD,
     {
-        dialect: 'postgres',
+        dialect: 'postgres'
     }
 )
 
 
 
-var User = UserModel(sequelize)
-var Employee = EmployeeModel(sequelize)
-var Meeting = MeetingModel(sequelize)
-var Project = ProjectModel(sequelize)
-var Role = RoleModel(sequelize)
-var MeetingType = MeetingTypeModel(sequelize)
+const User = UserModel(sequelize)
+const Employee = EmployeeModel(sequelize)
+const Meeting = MeetingModel(sequelize)
+const Project = ProjectModel(sequelize)
+const Role = RoleModel(sequelize)
+const MeetingType = MeetingTypeModel(sequelize)
 
 
 Role.hasMany(User)
 
 MeetingType.hasMany(Meeting)
+
+Project.hasMany(Meeting)
 
 Project.belongsToMany(Employee, { through: 'EmployeeProject' })
 Employee.belongsToMany(Project, { through: 'EmployeeProject' })

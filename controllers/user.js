@@ -30,7 +30,7 @@ class userController {
 
     async create(req, res) {
         try {
-            const { username, password } = req.body
+            const { username, password, roleId } = req.body
             const instance = await db.User.findOne({
                 where: { username: username }
             })
@@ -39,7 +39,8 @@ class userController {
             } else {
                 const user = await db.User.create({
                     username: username,
-                    hash: bcrypt.hashSync(password, 10)
+                    hash: bcrypt.hashSync(password, 10),
+                    roleId: roleId
                 })
                 res.status(200).json(user)
             }
