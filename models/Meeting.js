@@ -13,7 +13,7 @@ module.exports = function (sequelize) {
                 autoIncrement: true
             },
             days: {
-                type: Sequelize.STRING(8),
+                type: Sequelize.STRING(7),
                 allowNull: true
             },
             time: {
