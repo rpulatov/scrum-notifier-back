@@ -14,4 +14,6 @@ notifyScene.command('exit', async ctx => {
     ctx.reply('Выход из системы.')
     ctx.scene.enter('authScene')
 })
+
+
 module.exports = notifyScene

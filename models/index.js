@@ -30,10 +30,10 @@ const MeetingType = MeetingTypeModel(sequelize)
 Role.hasMany(User)
 
 MeetingType.hasMany(Meeting)
+Project.hasMany(Meeting)
 
 Project.belongsToMany(Employee, { through: 'EmployeeProject' })
 Employee.belongsToMany(Project, { through: 'EmployeeProject' })
-
 
 sequelize
     .authenticate()

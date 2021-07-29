@@ -13,7 +13,10 @@ bot.use(stage.middleware())
 
 bot.start(ctx => ctx.scene.enter('authScene'))
 bot.hears(/(.*?)/, async (ctx) => {
-    await ctx.reply('Текст для непонятных ситуаций.')
+    await ctx.reply('Введите команду /start, чтобы начать.')
 })
 
 bot.launch()
+
+module.exports = bot
+

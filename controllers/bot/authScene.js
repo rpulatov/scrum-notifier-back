@@ -17,7 +17,7 @@ authScene.enter(async ctx => {
     if(instance){
         const employee = instance.get({plain: true})
 
-        await ctx.reply(`Добро пожаловать, ${ctx.message.from.first_name}. Вы уже авторизованы как: ${employee.email}`)
+        await ctx.reply(`Добро пожаловать, ${employee.name}. Вы уже авторизованы как: ${employee.email}`)
         ctx.scene.enter('notifyScene')
     }
     else{
@@ -32,7 +32,6 @@ authScene.on('text', async ctx => {
     if (code?.length !== 4) {
         await ctx.reply('Код введен некорректно, повторите попытку.')
     }
-    // в данном else code должен сверятся с данным из DB.
     else {
         const instance = await db.Employee.findOne({
             where: { code: code }
@@ -41,7 +40,7 @@ authScene.on('text', async ctx => {
             const employee = instance.get({plain: true})
             if(!employee.chatId){
                 await instance.update({chatId: chatID})
-                await ctx.reply(`Добро пожаловать, ${ctx.message.from.first_name}. Вы авторизованы как: ${employee.email}\n\nТеперь Вы можете получать уведомления. Совсем скоро вы получите свое первое уведомление =).\n\nЧтобы выйти из системы уведомлений вызовите команду /exit.`)
+                await ctx.reply(`Добро пожаловать, ${employee.name}. Вы авторизованы как: ${employee.email}\n\nТеперь Вы можете получать уведомления. Совсем скоро вы получите свое первое уведомление =).\n\nЧтобы выйти из системы уведомлений вызовите команду /exit.`)
                    await ctx.scene.enter('notifyScene')
             }else{ctx.reply('Пользователь с данным кодом уже зарегистрирован в системе.')}
 

@@ -2,18 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="98873bb4-49bd-462b-8f07-06e14ffd5707" name="Default Changelist" comment="Аутентификация в боте. Сцены перенесены в отдельные файлы.">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_18_07_2021_21_59_[Default_Changelist]/shelved.patch" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_18_07_2021_21_59__Default_Changelist_.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.prettierrc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/controllers/project.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/routes/project.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot.js" beforeDir="false" afterPath="$PROJECT_DIR$/bot.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/bot/authScene.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/bot/authScene.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/bot/notifyScen.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/bot/notifyScen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +93,12 @@
       <workItem from="1626801045861" duration="331000" />
       <workItem from="1626873736636" duration="1841000" />
       <workItem from="1626875844295" duration="3864000" />
-      <workItem from="1626943401526" duration="2778000" />
+      <workItem from="1626943401526" duration="5077000" />
+      <workItem from="1627024953573" duration="747000" />
+      <workItem from="1627104972605" duration="4168000" />
+      <workItem from="1627133668864" duration="9540000" />
+      <workItem from="1627224736469" duration="599000" />
+      <workItem from="1627389847620" duration="8031000" />
     </task>
     <servers />
   </component>
