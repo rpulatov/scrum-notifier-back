@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const router = new Router()
-const controller = require('../controllers/user')
+const controller = require('../controllers/project')
 
 router.post('/', controller.create)
 router.get('/', controller.getAll)

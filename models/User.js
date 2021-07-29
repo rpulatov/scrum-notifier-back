@@ -13,7 +13,7 @@ module.exports = function (sequelize) {
             },
             hash: {
                 type: Sequelize.STRING(128),
-                allowNull: true
+                allowNull: false
             },
             username: {
                 type: Sequelize.STRING(128),

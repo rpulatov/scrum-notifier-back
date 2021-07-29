@@ -14,11 +14,11 @@ module.exports = function (sequelize) {
             },
             days: {
                 type: Sequelize.STRING(7),
-                allowNull: true
+                allowNull: false
             },
             time: {
                 type: Sequelize.TIME,
-                allowNull: true
+                allowNull: false
             },
             description: {
                 type: Sequelize.TEXT,

@@ -30,14 +30,18 @@ class employeeController {
 
 
     async create(req, res) {
+        const transaction = await db.sequelize.transaction()
         try {
-            const { name, email } = req.body
+            const { name, email, projectIds } = req.body
+
             const instance = await db.Employee.findOne({
                 where: { email: email }
             })
+
             if (instance) {
                 res.status(400).json({ message: "Сотрудник с таким email уже существует" })
-            } else {
+            }
+            else {
                 const employees = await db.Employee.findAll({ attributes: ['code'] })
                 const codes = employees.map(employee => employee.get({ plain: true }).code)
 
@@ -45,6 +49,20 @@ class employeeController {
                 while (codes.includes(code)) {
                     code = String(parseInt(crypto.randomBytes(8).toString('hex'), 16)).slice(0, 4)
                 }
+
+                const employee = await db.Employee.create({
+                    name: name,
+                    email: email,
+                    code: code
+                }, { transaction: transaction })
+
+                for (let id of projectIds) {
+                    await employee.addProject(id, { transaction: transaction })
+                }
+
+                await transaction.commit()
+
+
                 mailer(email, {
                     html: `
                         <div>
@@ -53,18 +71,14 @@ class employeeController {
                     `,
                     subject: 'Код для бота | SolutionsFactory'
                 })
-                const employee = await db.Employee.create({
-                    name: name,
-                    email: email,
-                    code: code
-                })
+
                 res.status(200).json(employee)
             }
         } catch (e) {
+            await transaction.rollback()
             console.log(e)
             res.status(400).json({ message: `Error: ${e.message}` })
         }
-
     }
 
 

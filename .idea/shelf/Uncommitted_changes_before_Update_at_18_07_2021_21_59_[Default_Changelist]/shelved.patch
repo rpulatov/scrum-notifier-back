@@ -1,0 +1,36 @@
+Index: .gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>/node_modules/\r\n.env\r\n.eslintrc.json\r\n.prettierrc\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.gitignore b/.gitignore
+--- a/.gitignore	(revision 5952fdaebdfdd89663731d535f74d19a68e4a49f)
++++ b/.gitignore	(date 1626620051079)
+@@ -1,6 +1,6 @@
+ /node_modules/
+ .env
+-.eslintrc.json
++.eslintrc.j
+ .prettierrc
+ 
+ 
+Index: .eslintrc.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.eslintrc.json b/.eslintrc.json
+new file mode 100644
+--- /dev/null	(date 1626353078693)
++++ b/.eslintrc.json	(date 1626353078693)
+@@ -0,0 +1,7 @@
++{
++    "extends": ["airbnb", "prettier"],
++    "plugins": ["prettier"],
++    "rules": {
++      "prettier/prettier": ["error"]
++    },
++  }
+\ No newline at end of file

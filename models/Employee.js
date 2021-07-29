@@ -14,7 +14,7 @@ module.exports = function (sequelize) {
             },
             code: {
                 type: Sequelize.STRING(4),
-                allowNull: true,
+                allowNull: false,
                 unique: true
             },
             email: {
@@ -24,7 +24,7 @@ module.exports = function (sequelize) {
             },
             name: {
                 type: Sequelize.STRING(128),
-                allowNull: true
+                allowNull: false
             },
             chatId: {
                 type: Sequelize.STRING(128),

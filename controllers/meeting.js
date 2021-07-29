@@ -2,6 +2,7 @@ const db = require('../models/index')
 
 class meetingController {
 
+
     async getById(req, res) {
         try {
             const meeting = await db.Meeting.findByPk(req.params.id)
@@ -30,6 +31,9 @@ class meetingController {
     async create(req, res) {
         try {
             const { meetingTypeId, projectId, description, days, time } = req.body
+            if (!projectId) {
+                res.status(400).json({ message: `Error: Не указан projectId, для встречи` })
+            }
             const meeting = await db.Meeting.create({
                 meetingTypeId: meetingTypeId,
                 projectId: projectId,
