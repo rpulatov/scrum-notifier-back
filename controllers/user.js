@@ -7,7 +7,7 @@ class userController {
         try {
             const user = await db.User.findByPk(req.params.id)
             if (!user) {
-                res.status(400).json({ message: "Пользователя с таким ID не существует" })
+                throw new Error('Пользователя с таким ID не существует')
             }
             res.status(200).json(user)
         } catch (e) {
@@ -31,11 +31,12 @@ class userController {
     async create(req, res) {
         try {
             const { username, password, roleId } = req.body
+            console.log(username, password, roleId, req.body)
             const instance = await db.User.findOne({
                 where: { username: username }
             })
             if (instance) {
-                res.status(400).json({ message: "Пользователь с таким логином уже существует" })
+                throw new Error('Пользователь с таким логином уже существует')
             } else {
                 const user = await db.User.create({
                     username: username,
@@ -59,7 +60,7 @@ class userController {
                 await user.update(req.body)
                 res.status(200).json(user)
             } else {
-                res.status(400).json({ message: "Пользователя с таким ID не существует" })
+                throw new Error('Пользователя с таким ID не существует')
             }
         } catch (e) {
             console.log(e)
@@ -73,7 +74,7 @@ class userController {
             const user = await db.User.findByPk(req.params.id)
 
             if (!user) {
-                res.status(400).json({ message: "Пользователя с таким ID не существует" })
+                throw new Error('Пользователя с таким ID не существует')
             }
 
             await user.destroy()

@@ -16,10 +16,10 @@ class authController {
                     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '30h' })
                     res.status(200).json({ user: user, token: token })
                 } else {
-                    res.status(400).json({ message: "Не верный логин или пароль" })
+                    throw new Error('Не верный логин или пароль')
                 }
             } else {
-                res.status(400).json({ message: `Не верный логин или пароль` })
+                throw new Error('Не верный логин или пароль')
             }
         } catch (e) {
             console.log(e)

@@ -6,7 +6,7 @@ class projectController {
     try {
       const project = await db.Project.findByPk(req.params.id)
       if (!project) {
-        res.status(400).json({ message: "Проекта с таким ID не существует" })
+        throw new Error('Проекта с таким ID не существует')
       }
       res.status(200).json(project)
     } catch (e) {
@@ -49,7 +49,7 @@ class projectController {
         await project.update(req.body)
         res.status(200).json(project)
       } else {
-        res.status(400).json({ message: "Проекта с таким ID не существует" })
+        throw new Error('Проекта с таким ID не существует')
       }
     } catch (e) {
       console.log(e)
@@ -63,7 +63,7 @@ class projectController {
       const project = await db.Project.findByPk(req.params.id)
 
       if (!project) {
-        res.status(400).json({ message: "Проекта с таким ID не существует" })
+        throw new Error('Проекта с таким ID не существует')
       }
 
       await project.destroy()

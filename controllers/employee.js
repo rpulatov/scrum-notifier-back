@@ -8,7 +8,7 @@ class employeeController {
         try {
             const employee = await db.Employee.findByPk(req.params.id)
             if (!employee) {
-                res.status(400).json({ message: "Пользователя с таким ID не существует" })
+                throw new Error('Сотрудника с таким ID не существует')
             }
             res.status(200).json(employee)
         } catch (e) {
@@ -39,7 +39,7 @@ class employeeController {
             })
 
             if (instance) {
-                res.status(400).json({ message: "Сотрудник с таким email уже существует" })
+                throw new Error('Сотрудник с таким email уже существует')
             }
             else {
                 const employees = await db.Employee.findAll({ attributes: ['code'] })
@@ -89,9 +89,9 @@ class employeeController {
                 await employee.update(req.body)
                 res.status(200).json(employee)
             } else {
-                res.status(400).json({ message: "Пользователя с таким ID не существует" })
+                throw new Error('Сотрудника с таким ID не существует')
             }
-        } catch (e) {
+        } catch (e) {Пользователя
             console.log(e)
             res.status(400).json({ message: `Error: ${e.message}` })
         }
@@ -103,7 +103,7 @@ class employeeController {
             const employee = await db.Employee.findByPk(req.params.id)
 
             if (!employee) {
-                res.status(400).json({ message: "Пользователя с таким ID не существует" })
+                throw new Error('Сотрудника с таким ID не существует')
             }
 
             await employee.destroy()

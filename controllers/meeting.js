@@ -7,7 +7,7 @@ class meetingController {
         try {
             const meeting = await db.Meeting.findByPk(req.params.id)
             if (!meeting) {
-                res.status(400).json({ message: "Встречи с таким ID не существует" })
+                throw new Error('Встречи с таким ID не существует')
             }
             res.status(200).json(meeting)
         } catch (e) {
@@ -32,7 +32,7 @@ class meetingController {
         try {
             const { meetingTypeId, projectId, description, days, time } = req.body
             if (!projectId) {
-                res.status(400).json({ message: `Error: Не указан projectId, для встречи` })
+                throw new Error('Не указан projectId, для встречи')
             }
             const meeting = await db.Meeting.create({
                 meetingTypeId: meetingTypeId,
@@ -57,7 +57,7 @@ class meetingController {
                 await meeting.update(req.body)
                 res.status(200).json(meeting)
             } else {
-                res.status(400).json({ message: "Встречи с таким ID не существует" })
+                throw new Error('Встречи с таким ID не существует')
             }
         } catch (e) {
             console.log(e)
@@ -71,7 +71,7 @@ class meetingController {
             const meeting = await db.Meeting.findByPk(req.params.id)
 
             if (!meeting) {
-                res.status(400).json({ message: "Встречи с таким ID не существует" })
+                throw new Error('Встречи с таким ID не существует')
             }
 
             await meeting.destroy()
