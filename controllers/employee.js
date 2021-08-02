@@ -1,119 +1,112 @@
-const db = require('../models/index')
+const { Employee, sequelize } = require('../models/index')
 const crypto = require('crypto')
 const mailer = require('../utils/mailer')
+const Result = require('../utils/result')
 
-class employeeController {
-
-    async getById(req, res) {
-        try {
-            const employee = await db.Employee.findByPk(req.params.id)
-            if (!employee) {
-                throw new Error('Сотрудника с таким ID не существует')
-            }
-            res.status(200).json(employee)
-        } catch (e) {
-            console.log(e)
-            res.status(400).json({ message: `Error: ${e.message}` })
+export async function getById(req, res, next) {
+    try {
+        const employee = await Employee.findByPk(req.params.id)
+        if (!employee) {
+            throw new Error('Сотрудника с таким ID не существует')
         }
+        res.send(new Result(employee))
+    } catch (e) {
+        next(e)
     }
+}
 
-
-    async getAll(req, res) {
-        try {
-            const employees = await db.Employee.findAll()
-            res.status(200).json(employees)
-        } catch (e) {
-            console.log(e)
-            res.status(400).json({ message: `Error: ${e.message}` })
-        }
+export async function getAll(req, res, next) {
+    try {
+        const employees = await Employee.findAll()
+        res.send(new Result(employees))
+    } catch (e) {
+        next(e)
     }
+}
 
+export async function create(req, res, next) {
+    try {
+        let transaction = await sequelize.transaction()
+        const result = new Result()
+        const { name, email, projectIds } = req.body
 
-    async create(req, res) {
-        const transaction = await db.sequelize.transaction()
-        try {
-            const { name, email, projectIds } = req.body
+        const instance = await Employee.findOne({
+            where: { email: email },
+        })
 
-            const instance = await db.Employee.findOne({
-                where: { email: email }
-            })
+        if (instance) {
+            throw new Error('Сотрудник с таким email уже существует')
+        } else {
+            const employees = await Employee.findAll({ attributes: ['code'] })
+            const codes = employees.map((employee) => employee.get({ plain: true }).code)
 
-            if (instance) {
-                throw new Error('Сотрудник с таким email уже существует')
+            var code = String(parseInt(crypto.randomBytes(8).toString('hex'), 16)).slice(0, 4)
+            while (codes.includes(code)) {
+                code = String(parseInt(crypto.randomBytes(8).toString('hex'), 16)).slice(0, 4)
             }
-            else {
-                const employees = await db.Employee.findAll({ attributes: ['code'] })
-                const codes = employees.map(employee => employee.get({ plain: true }).code)
 
-                var code = String(parseInt(crypto.randomBytes(8).toString('hex'), 16)).slice(0, 4)
-                while (codes.includes(code)) {
-                    code = String(parseInt(crypto.randomBytes(8).toString('hex'), 16)).slice(0, 4)
-                }
-
-                const employee = await db.Employee.create({
+            const employee = await Employee.create(
+                {
                     name: name,
                     email: email,
-                    code: code
-                }, { transaction: transaction })
+                    code: code,
+                },
+                { transaction: transaction },
+            )
 
-                for (let id of projectIds) {
-                    await employee.addProject(id, { transaction: transaction })
-                }
+            for (let id of projectIds) {
+                await employee.addProject(id, { transaction: transaction })
+            }
 
-                await transaction.commit()
+            await transaction.commit()
 
-
-                mailer(email, {
-                    html: `
+            mailer(email, {
+                html: `
                         <div>
                             Здравствуйте, ${name}. Ваш код для доступа к корпоративному чат-боту Telegram: <b>${code}</b>.
                         </div>
                     `,
-                    subject: 'Код для бота | SolutionsFactory'
-                })
+                subject: 'Код для бота | SolutionsFactory',
+            })
 
-                res.status(200).json(employee)
-            }
-        } catch (e) {
+            result.setData(employee)
+        }
+        res.send(result)
+    } catch (e) {
+        if (transaction) {
             await transaction.rollback()
-            console.log(e)
-            res.status(400).json({ message: `Error: ${e.message}` })
         }
+        next(e)
     }
-
-
-    async update(req, res) {
-        try {
-            const employee = await db.Employee.findByPk(req.params.id)
-            if (employee) {
-                await employee.update(req.body)
-                res.status(200).json(employee)
-            } else {
-                throw new Error('Сотрудника с таким ID не существует')
-            }
-        } catch (e) {Пользователя
-            console.log(e)
-            res.status(400).json({ message: `Error: ${e.message}` })
-        }
-    }
-
-
-    async delete(req, res) {
-        try {
-            const employee = await db.Employee.findByPk(req.params.id)
-
-            if (!employee) {
-                throw new Error('Сотрудника с таким ID не существует')
-            }
-
-            await employee.destroy()
-            res.status(200).json({ message: "Deleted" })
-        } catch (e) {
-            console.log(e)
-            res.status(400).json({ message: `Error: ${e.message}` })
-        }
-    }
-
 }
 
-module.exports = new employeeController()
+export async function update(req, res, next) {
+    try {
+        const employee = await Employee.findByPk(req.params.id)
+        const result = new Result()
+        if (employee) {
+            await employee.update(req.body)
+            result.setData(employee)
+        } else {
+            throw new Error('Сотрудника с таким ID не существует')
+        }
+        res.send(result)
+    } catch (e) {
+        next(e)
+    }
+}
+
+export async function drop(req, res, next) {
+    try {
+        const employee = await Employee.findByPk(req.params.id)
+
+        if (!employee) {
+            throw new Error('Сотрудника с таким ID не существует')
+        }
+
+        await employee.destroy()
+        res.send(new Result())
+    } catch (e) {
+        next(e)
+    }
+}

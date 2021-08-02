@@ -1,12 +1,11 @@
-const { Router } = require("express");
+const { Router } = require('express')
 const router = new Router()
-const controller = require('../controllers/meeting')
+const { create, update, getById, getAll, drop } = require('../controllers/meeting')
 
-router.post('/', controller.create)
-router.get('/', controller.getAll)
-router.get('/:id', controller.getById)
-router.put('/:id', controller.update)
-router.delete('/:id', controller.delete)
-
+router.post('/', create)
+router.get('/', getAll)
+router.get('/:id', getById)
+router.put('/:id', update)
+router.delete('/:id', drop)
 
 module.exports = router

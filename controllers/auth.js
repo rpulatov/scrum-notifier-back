@@ -1,32 +1,30 @@
-const db = require('../models/index')
+const { User } = require('../models/index')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const Result = require('../utils/result')
 
-class authController {
-
-    async signin(req, res) {
-        try {
-            const { username, password } = req.body
-            const instance = await db.User.findOne({
-                where: { username: username }
-            })
-            if (instance) {
-                const user = instance.get({ plain: true })
-                if (bcrypt.compareSync(password, user.hash)) {
-                    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '30h' })
-                    res.status(200).json({ user: user, token: token })
-                } else {
-                    throw new Error('Не верный логин или пароль')
-                }
+export async function signin(req, res, next) {
+    try {
+        const result = new Result()
+        const { username, password } = req.body
+        const instance = await User.findOne({
+            where: { username: username },
+        })
+        if (instance) {
+            const user = instance.get({ plain: true })
+            if (bcrypt.compareSync(password, user.hash)) {
+                const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+                    expiresIn: '30h',
+                })
+                result.setData({ user: user, token: token })
             } else {
                 throw new Error('Не верный логин или пароль')
             }
-        } catch (e) {
-            console.log(e)
-            res.status(400).json({ message: `signin error: ${e.message}` })
+        } else {
+            throw new Error('Не верный логин или пароль')
         }
-
+        res.send(result)
+    } catch (e) {
+        next(e)
     }
 }
-
-module.exports = new authController()

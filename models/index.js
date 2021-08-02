@@ -1,4 +1,4 @@
-Sequelize = require('sequelize')
+const Sequelize = require('sequelize')
 
 const UserModel = require('./User')
 const EmployeeModel = require('./Employee')
@@ -7,17 +7,14 @@ const ProjectModel = require('./Project')
 const RoleModel = require('./Role')
 const MeetingTypeModel = require('./MeetingType')
 
-
 const sequelize = new Sequelize(
     process.env.DB_NAME,
     process.env.DB_USERNAME,
     process.env.DB_PASSWORD,
     {
-        dialect: 'postgres'
-    }
+        dialect: 'postgres',
+    },
 )
-
-
 
 const User = UserModel(sequelize)
 const Employee = EmployeeModel(sequelize)
@@ -25,7 +22,6 @@ const Meeting = MeetingModel(sequelize)
 const Project = ProjectModel(sequelize)
 const Role = RoleModel(sequelize)
 const MeetingType = MeetingTypeModel(sequelize)
-
 
 Role.hasMany(User)
 
@@ -36,12 +32,10 @@ Project.hasMany(Meeting)
 Project.belongsToMany(Employee, { through: 'EmployeeProject' })
 Employee.belongsToMany(Project, { through: 'EmployeeProject' })
 
-
 sequelize
     .authenticate()
     .then(() => console.log('DB Connected.'))
     .catch((err) => console.error('DB Connection error: ', err))
-
 
 const db = {
     User,
@@ -52,7 +46,7 @@ const db = {
     MeetingType,
 
     sequelize,
-    Sequelize
+    Sequelize,
 }
 
 module.exports = db

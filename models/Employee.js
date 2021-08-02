@@ -1,8 +1,7 @@
 const Sequelize = require('sequelize')
 
-
 module.exports = function (sequelize) {
-    class EmployeeModel extends Sequelize.Model { }
+    class EmployeeModel extends Sequelize.Model {}
 
     EmployeeModel.init(
         {
@@ -10,29 +9,29 @@ module.exports = function (sequelize) {
                 type: Sequelize.INTEGER,
                 allowNull: false,
                 primaryKey: true,
-                autoIncrement: true
+                autoIncrement: true,
             },
             code: {
                 type: Sequelize.STRING(4),
                 allowNull: false,
-                unique: true
+                unique: true,
             },
             email: {
                 type: Sequelize.STRING(128),
                 allowNull: false,
-                unique: true
+                unique: true,
             },
             name: {
                 type: Sequelize.STRING(128),
-                allowNull: false
+                allowNull: false,
             },
             chatId: {
                 type: Sequelize.STRING(128),
                 allowNull: true,
-                unique: true
+                unique: true,
             },
         },
-        { sequelize, modelName: 'employee', tableName: 'Employee' }
+        { sequelize, modelName: 'employee', tableName: 'Employee' },
     )
     return EmployeeModel
 }

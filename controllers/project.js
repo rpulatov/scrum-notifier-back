@@ -1,79 +1,67 @@
-const db = require('../models/index')
+const { Project } = require('../models/index')
+const Result = require('../utils/result')
 
-class projectController {
-
-  async getById(req, res) {
+export async function getById(req, res, next) {
     try {
-      const project = await db.Project.findByPk(req.params.id)
-      if (!project) {
-        throw new Error('Проекта с таким ID не существует')
-      }
-      res.status(200).json(project)
+        const project = await Project.findByPk(req.params.id)
+        if (!project) {
+            throw new Error('Проекта с таким ID не существует')
+        }
+        res.send(new Result(project))
     } catch (e) {
-      console.log(e)
-      res.status(400).json({ message: `Error: ${e.message}` })
+        next(e)
     }
-  }
-
-
-  async getAll(req, res) {
-    try {
-      const projects = await db.Project.findAll()
-      res.status(200).json(projects)
-    } catch (e) {
-      console.log(e)
-      res.status(400).json({ message: `Error: ${e.message}` })
-    }
-  }
-
-
-  async create(req, res) {
-    try {
-      const { name, description } = req.body
-      const project = await db.Project.create({
-        name: name,
-        description: description
-      })
-      res.status(200).json(project)
-    } catch (e) {
-      console.log(e)
-      res.status(400).json({ message: `Error: ${e.message}` })
-    }
-  }
-
-
-  async update(req, res) {
-    try {
-      const project = await db.Project.findByPk(req.params.id)
-      if (project) {
-        await project.update(req.body)
-        res.status(200).json(project)
-      } else {
-        throw new Error('Проекта с таким ID не существует')
-      }
-    } catch (e) {
-      console.log(e)
-      res.status(400).json({ message: `Error: ${e.message}` })
-    }
-  }
-
-
-  async delete(req, res) {
-    try {
-      const project = await db.Project.findByPk(req.params.id)
-
-      if (!project) {
-        throw new Error('Проекта с таким ID не существует')
-      }
-
-      await project.destroy()
-      res.status(200).json({ message: "Deleted" })
-    } catch (e) {
-      console.log(e)
-      res.status(400).json({ message: `Error: ${e.message}` })
-    }
-  }
-
 }
 
-module.exports = new projectController()
+export async function getAll(req, res, next) {
+    try {
+        const projects = await Project.findAll()
+        res.send(new Result(projects))
+    } catch (e) {
+        next(e)
+    }
+}
+
+export async function create(req, res, next) {
+    try {
+        const { name, description } = req.body
+        const project = await Project.create({
+            name: name,
+            description: description,
+        })
+        res.send(new Result(project))
+    } catch (e) {
+        next(e)
+    }
+}
+
+export async function update(req, res, next) {
+    try {
+        result = new Result()
+        const project = await Project.findByPk(req.params.id)
+        if (project) {
+            await project.update(req.body)
+            result.setData(project)
+        } else {
+            throw new Error('Проекта с таким ID не существует')
+        }
+        res.send(result)
+    } catch (e) {
+        next(e)
+    }
+}
+
+export async function drop(req, res, next) {
+    try {
+        const project = await Project.findByPk(req.params.id)
+
+        if (!project) {
+            throw new Error('Проекта с таким ID не существует')
+        }
+
+        await project.destroy()
+        res.send(new Result())
+    } catch (e) {
+        next(e)
+    }
+}

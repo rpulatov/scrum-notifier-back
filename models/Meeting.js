@@ -1,8 +1,7 @@
 const Sequelize = require('sequelize')
 
-
 module.exports = function (sequelize) {
-    class MeetingModel extends Sequelize.Model { }
+    class MeetingModel extends Sequelize.Model {}
 
     MeetingModel.init(
         {
@@ -10,22 +9,22 @@ module.exports = function (sequelize) {
                 type: Sequelize.INTEGER,
                 allowNull: false,
                 primaryKey: true,
-                autoIncrement: true
+                autoIncrement: true,
             },
             days: {
                 type: Sequelize.STRING(7),
-                allowNull: false
+                allowNull: false,
             },
             time: {
                 type: Sequelize.TIME,
-                allowNull: false
+                allowNull: false,
             },
             description: {
                 type: Sequelize.TEXT,
-                allowNull: true
+                allowNull: true,
             },
         },
-        { sequelize, modelName: 'meeting', tableName: 'Meeting' }
+        { sequelize, modelName: 'meeting', tableName: 'Meeting' },
     )
     return MeetingModel
 }

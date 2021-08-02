@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 
 module.exports = function (sequelize) {
-    class ProjectModel extends Sequelize.Model { }
+    class ProjectModel extends Sequelize.Model {}
 
     ProjectModel.init(
         {
@@ -9,18 +9,18 @@ module.exports = function (sequelize) {
                 type: Sequelize.INTEGER,
                 allowNull: false,
                 primaryKey: true,
-                autoIncrement: true
+                autoIncrement: true,
             },
             name: {
                 type: Sequelize.STRING(128),
-                allowNull: true
+                allowNull: true,
             },
             description: {
                 type: Sequelize.TEXT,
-                allowNull: true
+                allowNull: true,
             },
         },
-        { sequelize, modelName: 'project', tableName: 'Project' }
+        { sequelize, modelName: 'project', tableName: 'Project' },
     )
     return ProjectModel
 }

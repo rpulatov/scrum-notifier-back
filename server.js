@@ -1,19 +1,17 @@
 const express = require('express')
-const bodyParser = require('body-parser')
-const db = require('./models/index')
 const routes = require('./routes/index')
-const router = require('./routes/auth')
-
 const app = express()
+const errorHandler = require('./utils/error')
+const bodyParser = require('body-parser')
 
 app.set('port', process.env.PORT)
 app.set('host', process.env.HOST)
 
-app.use(bodyParser.json());
+app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 routes(app)
-
+app.use(errorHandler)
 
 const start = () => {
     try {
