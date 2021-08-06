@@ -8,23 +8,36 @@ module.exports = async function (req, res, next) {
 
     try {
         if (!req.headers.authorization) {
-            throw new Error('UnauthorizedError')
+            const e = new Error()
+            e.name = 'UnauthorizedError'
+            throw e
         }
+
         const token = req.headers.authorization.split(' ')[1]
+        
         if (!token) {
-            throw new Error('UnauthorizedError')
+            const e = new Error()
+            e.name = 'UnauthorizedError'
+            throw e
         }
+
         const decodedData = jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
             if (err) {
-                throw new Error('UnauthorizedError')
+                const e = new Error()
+                e.name = 'UnauthorizedError'
+                throw e
             }
             return decoded
         })
         const user = await User.findByPk(decodedData.id)
+        
         if (!user) {
-            throw new Error('UnauthorizedError')
+            const e = new Error()
+            e.name = 'UnauthorizedError'
+            throw e
         }
-        req.user = user
+        req.user = decodedData
+        req.user.data = user
         next()
     } catch (e) {
         console.log(e)

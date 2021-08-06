@@ -4,9 +4,13 @@ const Result = require('../utils/result')
 export async function getById(req, res, next) {
     try {
         const project = await Project.findByPk(req.params.id)
+        
         if (!project) {
-            throw new Error('Проекта с таким ID не существует')
+            const e = new Error('Проекта с таким ID не существует')
+            e.name = 'NotFoundError'
+            throw e
         }
+
         res.send(new Result(project))
     } catch (e) {
         next(e)
@@ -37,15 +41,20 @@ export async function create(req, res, next) {
 
 export async function update(req, res, next) {
     try {
-        result = new Result()
+        const { name, description } = req.body
         const project = await Project.findByPk(req.params.id)
-        if (project) {
-            await project.update(req.body)
-            result.setData(project)
-        } else {
-            throw new Error('Проекта с таким ID не существует')
+        
+        if (!project) {
+            const e = new Error('Проекта с таким ID не существует')
+            e.name = 'NotFoundError'
+            throw e
         }
-        res.send(result)
+
+        await project.update({
+            name: name,
+            description: description,
+        })
+        res.send(new Result(project))
     } catch (e) {
         next(e)
     }
@@ -56,7 +65,9 @@ export async function drop(req, res, next) {
         const project = await Project.findByPk(req.params.id)
 
         if (!project) {
-            throw new Error('Проекта с таким ID не существует')
+            const e = new Error('Проекта с таким ID не существует')
+            e.name = 'NotFoundError'
+            throw e
         }
 
         await project.destroy()
