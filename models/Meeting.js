@@ -23,6 +23,14 @@ module.exports = function (sequelize) {
                 type: Sequelize.TEXT,
                 allowNull: true,
             },
+            meetingTypeId: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+            },
+            projectId: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+            },
         },
         { sequelize, modelName: 'meeting', tableName: 'Meeting' },
     )

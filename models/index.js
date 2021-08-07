@@ -6,6 +6,8 @@ const MeetingModel = require('./Meeting')
 const ProjectModel = require('./Project')
 const RoleModel = require('./Role')
 const MeetingTypeModel = require('./MeetingType')
+const EmployeeProjectModel = require('./EmployeeProject')
+
 
 const sequelize = new Sequelize(
     process.env.DB_NAME,
@@ -22,6 +24,7 @@ const Meeting = MeetingModel(sequelize)
 const Project = ProjectModel(sequelize)
 const Role = RoleModel(sequelize)
 const MeetingType = MeetingTypeModel(sequelize)
+const EmployeeProject = EmployeeProjectModel(sequelize)
 
 Role.hasMany(User)
 
@@ -29,8 +32,8 @@ MeetingType.hasMany(Meeting)
 
 Project.hasMany(Meeting)
 
-Project.belongsToMany(Employee, { through: 'EmployeeProject' })
-Employee.belongsToMany(Project, { through: 'EmployeeProject' })
+Project.belongsToMany(Employee, { through: EmployeeProject })
+Employee.belongsToMany(Project, { through: EmployeeProject })
 
 sequelize
     .authenticate()
@@ -44,6 +47,7 @@ const db = {
     Project,
     Role,
     MeetingType,
+    EmployeeProject,
 
     sequelize,
     Sequelize,

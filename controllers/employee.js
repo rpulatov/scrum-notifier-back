@@ -34,15 +34,18 @@ export async function getAll(req, res, next) {
               email: { [Op.iLike]: `%${req.query.email}%` }
             })
         }
-        let employees =  []
-        if(req.query.projectId){
-            if(!Array.isArray(req.query.projectId)){
-                req.query.projectId = [req.query.projectId]
-            }
-            
+        if(!Array.isArray(req.query.projectId)){
+            req.query.projectId = [req.query.projectId]
         }
-        employees = await Employee.findAll({
-            where: { [Op.and]: queries}
+        const employees = await Employee.findAll({
+            where: { [Op.and]: queries},
+            include: { 
+                attributes: [],
+                model: Project,
+                where: { 
+                    id: {[Op.or]: req.query.projectId } 
+                }
+            }
         })
         
         res.send(new Result(employees))
@@ -131,7 +134,7 @@ export async function update(req, res, next) {
 
             for (let project of projects) {
                 if(!projectIds.includes(project.get().id)) {
-                    await project.EmployeeProject.destroy({transaction: transaction})
+                    await project.employeeProject.destroy({transaction: transaction})
                 }else{
                     projectIds.splice(projectIds.indexOf(project.get().id), 1)
                 }
