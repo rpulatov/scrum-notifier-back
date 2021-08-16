@@ -14,7 +14,7 @@ module.exports = async function (req, res, next) {
         }
 
         const token = req.headers.authorization.split(' ')[1]
-        
+
         if (!token) {
             const e = new Error()
             e.name = 'UnauthorizedError'
@@ -30,7 +30,7 @@ module.exports = async function (req, res, next) {
             return decoded
         })
         const user = await User.findByPk(decodedData.id)
-        
+
         if (!user) {
             const e = new Error()
             e.name = 'UnauthorizedError'
@@ -40,7 +40,6 @@ module.exports = async function (req, res, next) {
         req.user.data = user
         next()
     } catch (e) {
-        console.log(e)
         next(e)
     }
 }

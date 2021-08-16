@@ -7,6 +7,8 @@ function errorHandler(err, req, res, next) {
         result.setError('Пользователь не авторизован', 1)
     } else if (err.name === 'NotFoundError') {
         result.setError(err.message, 2)
+    } else if (err.name === 'BadRequestError') {
+        result.setError(err.message, 3)
     } else {
         result.setError(err.message, 6)
     }

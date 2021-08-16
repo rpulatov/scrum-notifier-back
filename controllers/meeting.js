@@ -4,9 +4,9 @@ const Result = require('../utils/result')
 export async function getById(req, res, next) {
     try {
         const meeting = await Meeting.findByPk(req.params.id)
-        
+
         if (!meeting) {
-            const e =  new Error('Встречи с таким ID не существует')
+            const e = new Error('Встречи с таким ID не существует')
             e.name = 'NotFoundError'
             throw e
         }
@@ -29,11 +29,6 @@ export async function getAll(req, res, next) {
 export async function create(req, res, next) {
     try {
         const { meetingTypeId, projectId, description, days, time } = req.body
-        
-        if (!projectId) {
-            throw new Error('Не указан projectId, для встречи')
-        }
-
         const meeting = await Meeting.create({
             meetingTypeId: meetingTypeId,
             projectId: projectId,
@@ -53,7 +48,7 @@ export async function update(req, res, next) {
         const meeting = await Meeting.findByPk(req.params.id)
 
         if (!meeting) {
-            const e =  new Error('Встречи с таким ID не существует')
+            const e = new Error('Встречи с таким ID не существует')
             e.name = 'NotFoundError'
             throw e
         }
@@ -76,7 +71,7 @@ export async function drop(req, res, next) {
         const meeting = await Meeting.findByPk(req.params.id)
 
         if (!meeting) {
-            const e =  new Error('Встречи с таким ID не существует')
+            const e = new Error('Встречи с таким ID не существует')
             e.name = 'NotFoundError'
             throw e
         }

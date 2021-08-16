@@ -1,0 +1,18 @@
+POST http://localhost:5000/api/meeting HTTP/1.1
+content-type: application/json
+authorization: Bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjI5MTMwNjY0LCJleHAiOjE2MjkyMzg2NjR9.UcKQysO_4xTvDLCeN5pmyv_i4gFaZu88uFth8l7x9VU
+
+{
+//  встреча
+    "meetingTypeId": "1",
+    "days": "1111111",
+    "projectId": "1",
+    "time": "12:34",
+    "description": "ghbdtn",
+//  юзер и авторизация
+    "username": "admin2",
+    "password": "1234",
+    "roleId": "dld",
+//  сотрудник    
+    "email": "thefremy24@gmail.com"
+}

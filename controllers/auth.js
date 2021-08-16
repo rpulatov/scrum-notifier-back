@@ -18,10 +18,14 @@ export async function signin(req, res, next) {
                 })
                 result.setData({ user: user, token: token })
             } else {
-                throw new Error('Не верный логин или пароль')
+                const e = new Error('Не верный логин или пароль')
+                e.name = 'BadRequesError'
+                throw e
             }
         } else {
-            throw new Error('Не верный логин или пароль')
+            const e = new Error('Не верный логин или пароль')
+            e.name = 'BadRequesError'
+            throw e
         }
         res.send(result)
     } catch (e) {
